@@ -17,7 +17,9 @@ const SalesScriptContainer = (props: any) => {
         <Typography variant="h5">Sales Script</Typography>
         <Typography variant="body1" id="script-container">
           {/* Rendered sales script text here */}
-          {props.script}
+          {props.script.map((item) => (
+            <li>{item}</li>
+          ))}
         </Typography>
       </Paper>
     </Container>
@@ -25,11 +27,11 @@ const SalesScriptContainer = (props: any) => {
 };
 
 const HomePage = () => {
-  const [script, setScript] = useState("");
+  const [script, setScript] = useState([]);
 
   const handleScript = async () => {
-    const res = await fetch("./mock-transcript.txt");
-    const data = await res.text();
+    const res = await fetch("./script.json");
+    const data = await res.json();
     setScript(data);
   };
 
