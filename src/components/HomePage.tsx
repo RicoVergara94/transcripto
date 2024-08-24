@@ -17,9 +17,16 @@ const SalesScriptContainer = (props: any) => {
         <Typography variant="h5">Sales Script</Typography>
         <Typography variant="body1" id="script-container">
           {/* Rendered sales script text here */}
-          {props.script.map((item) => (
-            <li>{item}</li>
-          ))}
+          <ul>
+            {props.script.conversation?.map((item: any, index: number) => (
+              <li key={index} style={{ margin: 5 }}>
+                <strong>
+                  {item.speaker} ({item.time}):
+                </strong>{" "}
+                {item.message}
+              </li>
+            ))}
+          </ul>
         </Typography>
       </Paper>
     </Container>
@@ -67,7 +74,7 @@ const HomePage = () => {
             }}
             onClick={handleScript}
           >
-            Get Started
+            Upload
           </Button>
         </Box>
       </section>
