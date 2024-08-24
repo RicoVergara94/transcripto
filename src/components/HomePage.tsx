@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
+  Paper,
   Box,
   Typography,
   Button,
@@ -9,7 +10,30 @@ import {
   CardContent,
 } from "@mui/material";
 
+const SalesScriptContainer = (props: any) => {
+  return (
+    <Container>
+      <Paper elevation={3} style={{ padding: "20px" }}>
+        <Typography variant="h5">Sales Script</Typography>
+        <Typography variant="body1" id="script-container">
+          {/* Rendered sales script text here */}
+          {props.script}
+        </Typography>
+      </Paper>
+    </Container>
+  );
+};
+
 const HomePage = () => {
+  const [script, setScript] = useState("");
+
+  const handleScript = async () => {
+    const res = await fetch("./mock-transcript.txt");
+    const data = await res.text();
+    setScript(data);
+  };
+
+  useEffect(() => {}, [script]);
   return (
     <Container>
       {/* Hero Section */}
@@ -39,6 +63,7 @@ const HomePage = () => {
             sx={{
               m: 2,
             }}
+            onClick={handleScript}
           >
             Get Started
           </Button>
@@ -46,6 +71,10 @@ const HomePage = () => {
       </section>
 
       {/* Features Section */}
+      <section>
+        <SalesScriptContainer script={script} />
+      </section>
+
       <section>
         <Typography variant="h2" align="center">
           Features
