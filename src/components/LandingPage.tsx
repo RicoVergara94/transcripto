@@ -1,13 +1,14 @@
 import React from "react";
 import { Container, Typography } from "@mui/material";
 import SignIn from "./Sign-In";
+import "@fontsource/great-vibes"; // Import the Great Vibes font
 
 const LandingPage: React.FC = () => {
   return (
     <div>
       <Container
         sx={{
-          backgroundColor: "#E3F2FD", // Change to your chosen color
+          backgroundColor: "#D3D3D3", // Change to your chosen color
           minHeight: "100vh",
           display: "flex",
           flexDirection: "column",
@@ -20,7 +21,8 @@ const LandingPage: React.FC = () => {
           align="center"
           width="800px"
           sx={{
-            backgroundColor: "#6200EE",
+            backgroundColor: "#D3D3D3",
+            fontFamily: "Great Vibes, cursive", // Set font to Great Vibes
           }}
         >
           Transcripto
