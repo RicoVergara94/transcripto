@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Modal,
@@ -10,8 +10,11 @@ import {
   Card,
   CardContent,
   Divider,
+  AppBar,
+  Toolbar,
+  IconButton,
 } from "@mui/material";
-
+import SalesScriptContainer from "./SalesScriptContainer";
 
 const HomePage = () => {
   const [script, setScript] = useState([]);
@@ -31,28 +34,58 @@ const HomePage = () => {
     if (selectedFile) {
       navigate("/file-viewer", { state: { file: selectedFile } });
     }
-    // Close modal after confirming upload
     handleClose();
   };
 
-  useEffect(() => {}, [script]);
+  const handleScript = (newScript: any) => {
+    setScript(newScript);
+  };
 
   return (
-    <Container>
-      {/* Hero Section */}
-      <section style={{ textAlign: "center", margin: "50px 0" }}>
-        <img
-          src="/logo512.png"
-          alt="Transcripto Logo"
-          style={{ width: "100px", marginBottom: "20px" }}
-        />
-        <Typography variant="h1" align="center">
+    <Box sx={{ width: "100%", overflowX: "hidden" }}>
+      {/* Header */}
+      <AppBar
+        position="static"
+        style={{
+          background: "linear-gradient(90deg, #007FFF 30%, #00CFFF 90%)",
+          width: "100%",
+        }}
+      >
+        <Toolbar style={{ justifyContent: "space-between" }}>
+          <Typography
+            variant="h4"
+            style={{ fontWeight: "bold", color: "#fff" }}
+          >
+            Transcripto
+          </Typography>
+          <Button
+            color="inherit"
+            onClick={() => navigate("/signin")}
+            style={{ textTransform: "none" }}
+          >
+            Sign In
+          </Button>
+        </Toolbar>
+      </AppBar>
+
+      {/* Welcome Section */}
+      <Box
+        sx={{
+          textAlign: "center",
+          margin: "0px 0",
+          padding: "20px",
+          backgroundColor: "#f0f8ff",
+          borderRadius: "8px",
+          width: "100%",
+        }}
+      >
+        <Typography variant="h3" align="center" style={{ fontWeight: "bold", color: "#007FFF" }}>
           Welcome to Transcripto
         </Typography>
-        <Typography variant="h4" align="center">
+        <Typography variant="h5" align="center" style={{ color: "#004F7F", margin: "20px 0" }}>
           Your solution to improving sales coaching and decision-making
         </Typography>
-        <Typography variant="h5" align="center" style={{ margin: "20px 0" }}>
+        <Typography variant="h6" align="center" style={{ margin: "20px 0", lineHeight: "1.6" }}>
           Our feature empowers sales managers with the tools to efficiently
           annotate sales transcripts. With the ability to add, edit, and delete
           comments, and attach relevant files, you can enhance the detail and
@@ -65,17 +98,13 @@ const HomePage = () => {
         </Typography>
         <Box display="flex" justifyContent="center">
           <Button
-            variant="outlined"
-            color="secondary"
+            variant="contained"
+            color="primary"
             size="large"
-            sx={{
-              m: 2,
-            }}
-
+            sx={{ m: 2, textTransform: "none" }}
             onClick={handleOpen}
-
           >
-            Sign In
+            Upload
           </Button>
           <Modal
             open={open}
@@ -89,9 +118,10 @@ const HomePage = () => {
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                width: 400,
+                width: "100%",
+                maxWidth: 400,
                 bgcolor: "background.paper",
-                border: "2px solid #000",
+                borderRadius: "8px",
                 boxShadow: 24,
                 p: 4,
               }}
@@ -107,18 +137,18 @@ const HomePage = () => {
               <Box display="flex" justifyContent="space-between" mt={2}>
                 <Button
                   variant="contained"
-                  color="secondary"
+                  color="primary"
                   onClick={handleClose}
-                  sx={{ mt: 2 }}
+                  sx={{ mt: 2, textTransform: "none" }}
                 >
                   Cancel
                 </Button>
                 {selectedFile && (
                   <Button
                     variant="contained"
-                    color="secondary"
+                    color="primary"
                     onClick={handleConfirmUpload}
-                    sx={{ mt: 2 }}
+                    sx={{ mt: 2, textTransform: "none" }}
                   >
                     Upload
                   </Button>
@@ -127,31 +157,48 @@ const HomePage = () => {
             </Box>
           </Modal>
         </Box>
-      </section>
+      </Box>
 
-
-
-      <section>
-        <Typography variant="h2" align="center" gutterBottom>
+      {/* Features Section */}
+      <Box
+        sx={{ width: "100%", textAlign: "center", padding: "20px" }}
+      >
+        <Typography
+          variant="h4"
+          align="center"
+          gutterBottom
+          style={{
+            fontWeight: "bold",
+            color: "#007FFF",
+            margin: "40px 0",
+          }}
+        >
           Features
         </Typography>
-        <Grid container spacing={4}>
+        <Grid container spacing={4} justifyContent="center">
           {["Feature 1", "Feature 2", "Feature 3"].map((feature, index) => (
-            <Grid item xs={12} md={4} key={index}>
+            <Grid item xs={12} md={3} key={index}>
               <Card
                 sx={{
                   textAlign: "center",
-                  padding: "20px",
-                  backgroundColor: "#f5f5f5",
-                  boxShadow: "0 0 15px rgba(0, 127, 255, 0.5)",
+                  padding: "30px",
+                  backgroundColor: "#fff",
+                  borderRadius: "8px",
+                  transition: "0.3s",
+                  boxShadow: "0 4px 20px rgba(0, 127, 255, 0.3)",
                   "&:hover": {
-                    boxShadow: "0 0 30px rgba(0, 127, 255, 0.8)",
+                    boxShadow: "0 8px 30px rgba(0, 127, 255, 0.5)",
                   },
                 }}
               >
                 <CardContent>
-                  <Typography variant="h5">{feature}</Typography>
-                  <Typography>
+                  <Typography
+                    variant="h5"
+                    style={{ fontWeight: "bold", color: "#004F7F" }}
+                  >
+                    {feature}
+                  </Typography>
+                  <Typography style={{ color: "#7F7F7F" }}>
                     Detail about {feature.toLowerCase()}.
                   </Typography>
                 </CardContent>
@@ -159,23 +206,33 @@ const HomePage = () => {
             </Grid>
           ))}
         </Grid>
-      </section>
+      </Box>
 
-      <Divider style={{ margin: "40px 0" }} />
+      <Divider style={{ margin: "40px 0", width: "100%" }} />
 
       {/* Sales Script Section */}
-      <section>
+      <Box sx={{ width: "100%", padding: "0 20px" }}>
         <SalesScriptContainer script={script} handleScript={handleScript} />
-      </section>
+      </Box>
 
-      <Divider style={{ margin: "40px 0" }} />
+      <Divider style={{ margin: "40px 0", width: "100%" }} />
 
       {/* About Us Section */}
-      <section>
-        <Typography variant="h2" align="center" gutterBottom>
+      <Box sx={{ width: "100%", textAlign: "center", padding: "20px" }}>
+        <Typography
+          variant="h4"
+          align="center"
+          gutterBottom
+          style={{ fontWeight: "bold", color: "#007FFF" }}
+        >
           About Us
         </Typography>
-        <Typography variant="h6" align="center" paragraph>
+        <Typography
+          variant="h6"
+          align="center"
+          paragraph
+          style={{ color: "#004F7F", lineHeight: "1.6" }}
+        >
           We are a team of four passionate developers participating in a
           thrilling hackathon. Over the past 5 weeks, we've collaborated to
           create innovative and impactful projects that sharpen our skills.
@@ -183,21 +240,37 @@ const HomePage = () => {
           expertise in both backend and frontend development to build solutions
           that make a difference.
         </Typography>
-      </section>
+      </Box>
 
       {/* Footer */}
-      <footer style={{ marginTop: "40px", padding: "20px 0", textAlign: "center" }}>
+      <Box
+        sx={{
+          width: "100%",
+          padding: "20px 0",
+          textAlign: "center",
+          backgroundColor: "#f0f8ff",
+          borderRadius: "8px",
+        }}
+      >
         <Typography>© 2024 Transcripto</Typography>
         <Box display="flex" justifyContent="center" mt={2}>
-          <Button variant="text" color="secondary">
+          <Button
+            variant="text"
+            color="primary"
+            style={{ textTransform: "none" }}
+          >
             Privacy Policy
           </Button>
-          <Button variant="text" color="secondary">
+          <Button
+            variant="text"
+            color="primary"
+            style={{ textTransform: "none" }}
+          >
             Terms of Service
           </Button>
         </Box>
-      </footer>
-    </Container>
+      </Box>
+    </Box>
   );
 };
 
