@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
-  Paper,
+  Modal,
   Box,
   Typography,
   Button,
@@ -11,49 +12,27 @@ import {
   Divider,
 } from "@mui/material";
 
-const SalesScriptContainer = (props: any) => {
-  return (
-    <Container>
-      <Paper elevation={3} style={{ padding: "20px", marginTop: "20px" }}>
-        <Typography variant="h5">Sales Script</Typography>
-        <Typography variant="body1" id="script-container">
-          <ul>
-            {props.script.conversation?.map((item: any, index: number) => (
-              <li key={index} style={{ margin: 5 }}>
-                <strong>
-                  {item.speaker} ({item.time}):
-                </strong>{" "}
-                {item.message}
-              </li>
-            ))}
-          </ul>
-        </Typography>
-      </Paper>
-      <Box display="flex" justifyContent="center" mt={2}>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          sx={{
-            m: 2,
-            backgroundColor: "#007FFF",
-          }}
-          onClick={props.handleScript}
-        >
-          Upload
-        </Button>
-      </Box>
-    </Container>
-  );
-};
 
 const HomePage = () => {
   const [script, setScript] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const navigate = useNavigate();
 
-  const handleScript = async () => {
-    const res = await fetch("./script.json");
-    const data = await res.json();
-    setScript(data);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setSelectedFile(file);
+  };
+
+  const handleConfirmUpload = () => {
+    if (selectedFile) {
+      navigate("/file-viewer", { state: { file: selectedFile } });
+    }
+    // Close modal after confirming upload
+    handleClose();
   };
 
   useEffect(() => {}, [script]);
@@ -92,16 +71,66 @@ const HomePage = () => {
             sx={{
               m: 2,
             }}
-            href="/signin"
+
+            onClick={handleOpen}
+
           >
             Sign In
           </Button>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="upload-modal-title"
+            aria-describedby="upload-modal-description"
+          >
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 400,
+                bgcolor: "background.paper",
+                border: "2px solid #000",
+                boxShadow: 24,
+                p: 4,
+              }}
+            >
+              <Typography id="upload-modal-title" variant="h6" component="h2">
+                Upload Your File
+              </Typography>
+              <input
+                type="file"
+                onChange={handleFileUpload}
+                style={{ marginTop: "16px", width: "100%" }}
+              />
+              <Box display="flex" justifyContent="space-between" mt={2}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleClose}
+                  sx={{ mt: 2 }}
+                >
+                  Cancel
+                </Button>
+                {selectedFile && (
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleConfirmUpload}
+                    sx={{ mt: 2 }}
+                  >
+                    Upload
+                  </Button>
+                )}
+              </Box>
+            </Box>
+          </Modal>
         </Box>
       </section>
 
-      <Divider style={{ margin: "40px 0" }} />
 
-      {/* Features Section */}
+
       <section>
         <Typography variant="h2" align="center" gutterBottom>
           Features
