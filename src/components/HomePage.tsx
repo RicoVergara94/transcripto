@@ -5,14 +5,12 @@ import {
   Box,
   Typography,
   Button,
-  Container,
   Grid,
   Card,
   CardContent,
   Divider,
   AppBar,
   Toolbar,
-  IconButton,
 } from "@mui/material";
 import SalesScriptContainer from "./SalesScriptContainer";
 
@@ -79,13 +77,25 @@ const HomePage = () => {
           width: "100%",
         }}
       >
-        <Typography variant="h3" align="center" style={{ fontWeight: "bold", color: "#007FFF" }}>
+        <Typography
+          variant="h3"
+          align="center"
+          style={{ fontWeight: "bold", color: "#007FFF" }}
+        >
           Welcome to Transcripto
         </Typography>
-        <Typography variant="h5" align="center" style={{ color: "#004F7F", margin: "20px 0" }}>
+        <Typography
+          variant="h5"
+          align="center"
+          style={{ color: "#004F7F", margin: "20px 0" }}
+        >
           Your solution to improving sales coaching and decision-making
         </Typography>
-        <Typography variant="h6" align="center" style={{ margin: "20px 0", lineHeight: "1.6" }}>
+        <Typography
+          variant="h6"
+          align="center"
+          style={{ margin: "20px 0", lineHeight: "1.6" }}
+        >
           Our feature empowers sales managers with the tools to efficiently
           annotate sales transcripts. With the ability to add, edit, and delete
           comments, and attach relevant files, you can enhance the detail and
@@ -160,9 +170,7 @@ const HomePage = () => {
       </Box>
 
       {/* Features Section */}
-      <Box
-        sx={{ width: "100%", textAlign: "center", padding: "20px" }}
-      >
+      <Box sx={{ width: "100%", textAlign: "center", padding: "20px" }}>
         <Typography
           variant="h4"
           align="center"
@@ -208,15 +216,6 @@ const HomePage = () => {
         </Grid>
       </Box>
 
-      <Divider style={{ margin: "40px 0", width: "100%" }} />
-
-      {/* Sales Script Section */}
-      <Box sx={{ width: "100%", padding: "0 20px" }}>
-        <SalesScriptContainer script={script} handleScript={handleScript} />
-      </Box>
-
-      <Divider style={{ margin: "40px 0", width: "100%" }} />
-
       {/* About Us Section */}
       <Box sx={{ width: "100%", textAlign: "center", padding: "20px" }}>
         <Typography
@@ -235,8 +234,8 @@ const HomePage = () => {
         >
           We are a team of four passionate developers participating in a
           thrilling hackathon. Over the past 5 weeks, we've collaborated to
-          create innovative and impactful projects that sharpen our skills.
-          Our team members, Oscar, Ayman, Shashank, and Rohit, bring together
+          create innovative and impactful projects that sharpen our skills. Our
+          team members, Oscar, Ayman, Shashank, and Rohit, bring together
           expertise in both backend and frontend development to build solutions
           that make a difference.
         </Typography>
