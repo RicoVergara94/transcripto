@@ -198,6 +198,7 @@ const SalesScriptContainer: React.FC = () => {
           },
         ],
       };
+      //set json
       setJsonContent(jsonObject);
     } catch (error) {
       console.error("Conversion failed:", error);
