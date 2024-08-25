@@ -3,7 +3,7 @@ import { OpenAI } from "openai";
 // Initialize OpenAI client with environment variable for API key
 const openai = new OpenAI({
   apiKey:
-    "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",
+    "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",
   dangerouslyAllowBrowser: true, // Use environment variable
 });
 
@@ -17,9 +17,9 @@ export const convertTextToJson = async (text: string): Promise<any> => {
           content: `Convert the following text into a JSON object:
 
 
-          "lavuda": [
+          "conversation": [
             {
-              "timestamp": time ex:("00:00:00"),
+              "timestamp": time ex:("00:00"),
               "speaker": "name",
               "message": "content"
             },

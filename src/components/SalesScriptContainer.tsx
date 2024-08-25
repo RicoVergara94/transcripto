@@ -6,7 +6,6 @@ import {
   Typography,
   Card,
   CardContent,
-  CircularProgress,
   LinearProgress,
 } from "@mui/material";
 import * as mammoth from "mammoth";
@@ -20,7 +19,7 @@ const SalesScriptContainer = () => {
   const file = location.state?.file as File;
 
   const [fileContent, setFileContent] = useState<string | null>(null);
-  const [jsonContent, setJsonContent] = useState<any | null>(null);
+  const [jsonContent, setJsonContent] = useState<JsonContent | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -90,15 +89,19 @@ const SalesScriptContainer = () => {
     }
   }, [file]);
 
-  // Use a separate effect to handle JSON conversion once fileContent is set
   useEffect(() => {
     if (fileContent) {
       const convertFileContentToJson = async () => {
         try {
           console.log("Starting conversion");
           const jsonData = await convertTextToJson(fileContent);
-          const data = JSON.parse(jsonData);
-          setJsonContent(data);
+          const data = JSON.parse(jsonData) as JsonContent;
+          // Ensure jsonContent is not null or undefined
+          if (data && Array.isArray(data.conversation)) {
+            setJsonContent(data);
+          } else {
+            setError("Invalid JSON structure.");
+          }
         } catch (error) {
           console.error("Conversion failed:", error);
           setError("Failed to convert text to JSON.");
@@ -114,6 +117,16 @@ const SalesScriptContainer = () => {
       console.log("Updated JSON content:", jsonContent);
     }
   }, [jsonContent]);
+
+  interface ConversationEntry {
+    speaker: string;
+    timestamp: string;
+    message: string;
+  }
+
+  interface JsonContent {
+    conversation: ConversationEntry[];
+  }
 
   return (
     <Box sx={{ p: 3 }}>
@@ -139,26 +152,40 @@ const SalesScriptContainer = () => {
               <Typography variant="body1" color="error">
                 {error}
               </Typography>
-            ) : jsonContent ? (
-              <Box
-                component="pre"
-                sx={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
-              >
-                {/* Display JSON data */}
-                <Typography variant="body1">
-                  {JSON.stringify(jsonContent, null, 2)}
-                </Typography>
-              </Box>
-            ) : jsonContent ? (
-              <Box
-                component="pre"
-                sx={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
-              >
-                {/* Display the file content */}
-                <Typography variant="body1">{jsonContent}</Typography>
+            ) : jsonContent && jsonContent.conversation ? (
+              <Box sx={{ padding: 2 }}>
+                {jsonContent.conversation.map(
+                  (entry: ConversationEntry, index: number) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        borderLeft: `4px solid ${
+                          index % 2 === 0 ? "green" : "orange"
+                        }`,
+                        borderRadius: 1,
+                        padding: 2,
+                        marginBottom: 2,
+                        backgroundColor: "#f9f9f9",
+                      }}
+                    >
+                      <Typography
+                        variant="body2"
+                        sx={{ fontWeight: "bold", color: "text.primary" }}
+                      >
+                        {entry.speaker}{" "}
+                        <span style={{ color: "grey" }}>
+                          ({entry.timestamp})
+                        </span>
+                      </Typography>
+                      <Typography variant="body1" sx={{ marginTop: 1 }}>
+                        {entry.message}
+                      </Typography>
+                    </Box>
+                  )
+                )}
               </Box>
             ) : (
-              <CircularProgress />
+              <LinearProgress sx={{ width: "100%" }} />
             )}
           </Box>
         </CardContent>
