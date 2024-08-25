@@ -10,7 +10,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/Home" element={<HomePage />} />
         <Route path="/file-viewer" element={<SalesScriptContainer />} />
         <Route path="/Signin" element={<LandingPage />} />
         {/* <Route path="/dashboard" element={<Dashboard />} />

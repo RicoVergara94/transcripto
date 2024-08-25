@@ -8,7 +8,12 @@ import {
   CardContent,
   LinearProgress,
   Grid,
+  IconButton,
+  Button,
+  Modal,
+  TextField,
 } from "@mui/material";
+import CommentIcon from "@mui/icons-material/Comment";
 import Navbar from "./navBar";
 import * as mammoth from "mammoth";
 import * as pdfjsLib from "pdfjs-dist";
@@ -24,6 +29,16 @@ const SalesScriptContainer: React.FC = () => {
   const [jsonContent, setJsonContent] = useState<JsonContent | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  interface ConversationEntry {
+    speaker: string;
+    timestamp: string;
+    message: string;
+    comment?: string;
+  }
+  interface JsonContent {
+    conversation: ConversationEntry[];
+  }
 
   useEffect(() => {
     if (file) {
@@ -90,115 +105,105 @@ const SalesScriptContainer: React.FC = () => {
     }
   }, [file]);
 
+  const jsonObject = {
+    conversation: [
+      {
+        timestamp: "00:00:00",
+        speaker: "Sales Rep",
+        message:
+          "Hi there! Thank you for taking the time to speak with me today. How are you doing?",
+      },
+      {
+        timestamp: "00:00:05",
+        speaker: "Customer",
+        message: "I'm doing well, thank you. How about you?",
+      },
+      {
+        timestamp: "00:00:07",
+        speaker: "Sales Rep",
+        message:
+          "I'm great, thanks for asking! So, I understand you're interested in our new software solution for...",
+      },
+      {
+        timestamp: "00:00:15",
+        speaker: "Customer",
+        message:
+          "Yes, I've been looking for something to help manage my customer relationships more effectively.",
+      },
+      {
+        timestamp: "00:00:20",
+        speaker: "Sales Rep",
+        message:
+          "That's great to hear! Our CRM platform is designed specifically for small to medium-sized businesses...",
+      },
+      {
+        timestamp: "00:00:32",
+        speaker: "Customer",
+        message: "That sounds promising. How does the pricing work?",
+      },
+      {
+        timestamp: "00:00:35",
+        speaker: "Sales Rep",
+        message:
+          "We offer three tiers of pricing depending on the features and number of users. The basic plan starts...",
+      },
+      {
+        timestamp: "00:00:50",
+        speaker: "Customer",
+        message:
+          "The professional plan seems like it might be a good fit. What kind of support do you offer?",
+      },
+      {
+        timestamp: "00:00:55",
+        speaker: "Sales Rep",
+        message:
+          "We provide 24/7 support through chat, email, and phone for all our plans. Plus, we offer a dedicated...",
+      },
+      {
+        timestamp: "00:01:05",
+        speaker: "Customer",
+        message:
+          "That's good to know. Can I try the software before committing?",
+      },
+      {
+        timestamp: "00:01:08",
+        speaker: "Sales Rep",
+        message:
+          "Absolutely! We offer a 14-day free trial with no credit card required. You can explore all the features...",
+      },
+      {
+        timestamp: "00:01:15",
+        speaker: "Customer",
+        message: "Perfect. I'll definitely give it a try.",
+      },
+      {
+        timestamp: "00:01:18",
+        speaker: "Sales Rep",
+        message:
+          "Fantastic! I'll send you the details to get started with your trial. If you have any questions during...",
+      },
+      {
+        timestamp: "00:01:25",
+        speaker: "Customer",
+        message: "Thanks, I appreciate that.",
+      },
+      {
+        timestamp: "00:01:27",
+        speaker: "Sales Rep",
+        message:
+          "You're welcome! I look forward to hearing your thoughts. Have a great day!",
+      },
+      {
+        timestamp: "00:01:30",
+        speaker: "Customer",
+        message: "You too, thanks.",
+      },
+    ],
+  };
+
   const convertFileContentToJson = async () => {
     try {
-      // Example conversion logic, replace with actual implementation
-      // const jsonData = await convertTextToJson(fileContent);
-      // const data = JSON.parse(jsonData) as JsonContent;
-      // Ensure jsonContent is not null or undefined
-      // if (data && Array.isArray(data.conversation)) {
-      //   setJsonContent(data);
-      // } else {
-      //   setError("Invalid JSON structure.");
-      // }
-
-      // Placeholder JSON object
-      const jsonObject = {
-        conversation: [
-          {
-            timestamp: "00:00:00",
-            speaker: "Sales Rep",
-            message:
-              "Hi there! Thank you for taking the time to speak with me today. How are you doing?",
-          },
-          {
-            timestamp: "00:00:05",
-            speaker: "Customer",
-            message: "I'm doing well, thank you. How about you?",
-          },
-          {
-            timestamp: "00:00:07",
-            speaker: "Sales Rep",
-            message:
-              "I'm great, thanks for asking! So, I understand you're interested in our new software solution for...",
-          },
-          {
-            timestamp: "00:00:15",
-            speaker: "Customer",
-            message:
-              "Yes, I've been looking for something to help manage my customer relationships more effectively.",
-          },
-          {
-            timestamp: "00:00:20",
-            speaker: "Sales Rep",
-            message:
-              "That's great to hear! Our CRM platform is designed specifically for small to medium-sized businesses...",
-          },
-          {
-            timestamp: "00:00:32",
-            speaker: "Customer",
-            message: "That sounds promising. How does the pricing work?",
-          },
-          {
-            timestamp: "00:00:35",
-            speaker: "Sales Rep",
-            message:
-              "We offer three tiers of pricing depending on the features and number of users. The basic plan starts...",
-          },
-          {
-            timestamp: "00:00:50",
-            speaker: "Customer",
-            message:
-              "The professional plan seems like it might be a good fit. What kind of support do you offer?",
-          },
-          {
-            timestamp: "00:00:55",
-            speaker: "Sales Rep",
-            message:
-              "We provide 24/7 support through chat, email, and phone for all our plans. Plus, we offer a dedicated...",
-          },
-          {
-            timestamp: "00:01:05",
-            speaker: "Customer",
-            message:
-              "That's good to know. Can I try the software before committing?",
-          },
-          {
-            timestamp: "00:01:08",
-            speaker: "Sales Rep",
-            message:
-              "Absolutely! We offer a 14-day free trial with no credit card required. You can explore all the features...",
-          },
-          {
-            timestamp: "00:01:15",
-            speaker: "Customer",
-            message: "Perfect. I'll definitely give it a try.",
-          },
-          {
-            timestamp: "00:01:18",
-            speaker: "Sales Rep",
-            message:
-              "Fantastic! I'll send you the details to get started with your trial. If you have any questions during...",
-          },
-          {
-            timestamp: "00:01:25",
-            speaker: "Customer",
-            message: "Thanks, I appreciate that.",
-          },
-          {
-            timestamp: "00:01:27",
-            speaker: "Sales Rep",
-            message:
-              "You're welcome! I look forward to hearing your thoughts. Have a great day!",
-          },
-          {
-            timestamp: "00:01:30",
-            speaker: "Customer",
-            message: "You too, thanks.",
-          },
-        ],
-      };
-      //set json
+      // Placeholder JSON object for example
       setJsonContent(jsonObject);
     } catch (error) {
       console.error("Conversion failed:", error);
@@ -212,33 +217,53 @@ const SalesScriptContainer: React.FC = () => {
     }
   }, [fileContent]);
 
-  useEffect(() => {
-    if (jsonContent) {
-      console.log("Updated JSON content:", jsonContent);
+  const [isCommentBoxVisible, setIsCommentBoxVisible] = useState(false);
+  const [selectedBoxIndex, setSelectedBoxIndex] = useState<number | null>(null);
+  const [comment, setComment] = useState("");
+
+  // Function to handle opening the comment box
+  const handleOpenCommentBox = (index: number) => {
+    setSelectedBoxIndex(index);
+    setIsCommentBoxVisible(true);
+  };
+
+  // Function to handle closing the comment box
+  const handleCloseCommentBox = () => {
+    setIsCommentBoxVisible(false);
+    setSelectedBoxIndex(null);
+  };
+
+  const handleCommentSubmit = () => {
+    if (jsonContent && selectedBoxIndex !== null) {
+      // Check if the selectedBoxIndex is within bounds
+      if (
+        selectedBoxIndex >= 0 &&
+        selectedBoxIndex < jsonContent.conversation.length
+      ) {
+        // Clone jsonContent to avoid direct mutation
+        const updatedContent = { ...jsonContent };
+        updatedContent.conversation[selectedBoxIndex] = {
+          ...updatedContent.conversation[selectedBoxIndex],
+          comment: comment,
+        };
+        setJsonContent(updatedContent);
+      }
     }
-  }, [jsonContent]);
 
-  interface ConversationEntry {
-    speaker: string;
-    timestamp: string;
-    message: string;
-  }
-
-  interface JsonContent {
-    conversation: ConversationEntry[];
-  }
+    setComment(""); // Clear the comment
+    handleCloseCommentBox(); // Close the comment box after submission
+  };
 
   return (
     <Grid container sx={{ height: "100vh" }}>
-      {/* 1st Container: Menu Bar */}
       <Navbar />
       <Grid
         item
         xs={6}
         sx={{
           borderRight: "1px solid #ccc",
-          height: "100%", // Use full height
-          overflowY: "auto", // Enable scrolling
+          height: "100%",
+          overflowY: "auto",
           padding: 2,
         }}
       >
@@ -279,6 +304,9 @@ const SalesScriptContainer: React.FC = () => {
                             padding: 2,
                             marginBottom: 2,
                             backgroundColor: "#f9f9f9",
+                            "&:hover .comment-icon": {
+                              display: "block",
+                            },
                           }}
                         >
                           <Typography
@@ -293,6 +321,64 @@ const SalesScriptContainer: React.FC = () => {
                           <Typography variant="body1" sx={{ marginTop: 1 }}>
                             {entry.message}
                           </Typography>
+                          <IconButton
+                            className="comment-icon"
+                            sx={{
+                              display: "none",
+                            }}
+                            onClick={() => handleOpenCommentBox(index)}
+                          >
+                            <CommentIcon />
+                          </IconButton>
+                          <Modal
+                            open={isCommentBoxVisible}
+                            onClose={handleCloseCommentBox}
+                            aria-labelledby="comment-box-title"
+                            aria-describedby="comment-box-description"
+                          >
+                            <Box
+                              key={1}
+                              sx={{
+                                position: "absolute",
+                                top: "50%",
+                                left: "50%",
+                                transform: "translate(-50%, -50%)",
+                                width: 400,
+                                bgcolor: "background.paper",
+                                boxShadow: 24,
+                                p: 4,
+                                borderRadius: 2,
+                              }}
+                            >
+                              <h2 id="comment-box-title">Leave a Comment</h2>
+                              <TextField
+                                fullWidth
+                                label="Comment"
+                                multiline
+                                rows={4}
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                              />
+                              <Box
+                                mt={2}
+                                display="flex"
+                                justifyContent="space-between"
+                              >
+                                <Button
+                                  variant="contained"
+                                  onClick={() => handleCommentSubmit()}
+                                >
+                                  Submit
+                                </Button>
+                                <Button
+                                  variant="outlined"
+                                  onClick={handleCloseCommentBox}
+                                >
+                                  Cancel
+                                </Button>
+                              </Box>
+                            </Box>
+                          </Modal>
                         </Box>
                       )
                     )}
@@ -305,19 +391,61 @@ const SalesScriptContainer: React.FC = () => {
           </Card>
         </Box>
       </Grid>
-      {/* 3rd Container: Comments & Summary */}
       <Grid item xs={4} sx={{ padding: 2 }}>
-        <Box>
-          <Typography variant="h5">Comments</Typography>
-          {/* Render comments here */}
-        </Box>
-        <Box sx={{ mt: 4 }}>
-          <Typography variant="h5">Summary</Typography>
-          {/* Render summary here */}
-        </Box>
+        <Typography variant="h4" gutterBottom>
+          Comments
+        </Typography>
+        <Card>
+          <CardContent>
+            {jsonContent && jsonContent.conversation ? (
+              <Box>
+                {jsonContent.conversation.map(
+                  (entry: ConversationEntry, index: number) => (
+                    <Box key={index} sx={{ mb: 2 }}>
+                      {entry.comment && (
+                        <Box
+                          sx={{
+                            padding: 2,
+                            borderRadius: 1,
+                            border: "1px solid #ddd",
+                            backgroundColor: "#fff",
+                          }}
+                        >
+                          <Typography variant="body2" sx={{ fontSize: "15px" }}>
+                            {entry.message}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            sx={{ fontSize: "10px", fontWeight: "bold", mt: 1 }}
+                          >
+                            Comment for "{entry.speaker}" at {entry.timestamp}
+                          </Typography>
+                          <Box
+                            sx={{
+                              padding: 2,
+                              borderRadius: 1,
+                              border: "1px solid #ddd",
+                              backgroundColor: "#f1f1f1",
+                              mt: 1,
+                            }}
+                          >
+                            <Typography variant="body1" sx={{}}>
+                              {entry.comment}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      )}
+                    </Box>
+                  )
+                )}
+              </Box>
+            ) : (
+              <Typography variant="body1">No comments available.</Typography>
+            )}
+          </CardContent>
+        </Card>
       </Grid>
     </Grid>
   );
 };
-
 export default SalesScriptContainer;
