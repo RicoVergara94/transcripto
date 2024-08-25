@@ -5,6 +5,8 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@fontsource/great-vibes": "^5.0.22",
+    "@fontsource/montserrat": "^5.0.19",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "@testing-library/jest-dom": "^5.17.0",
@@ -15,6 +17,7 @@
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
     "@types/react-router-dom": "^5.3.3",
+    "axios": "^1.7.5",
     "openai": "^4.56.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -46,5 +49,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }
